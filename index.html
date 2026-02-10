@@ -9,21 +9,22 @@
       margin: 0;
       padding: 20px;
       text-align: center;
+      overflow: hidden;
     }
 
     .container {
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       gap: 20px;
-      flex-wrap: wrap;
       margin-top: 40px;
+      z-index: 2;
+      position: relative;
     }
 
-    img {
+    img.main {
       width: 200px;
-      max-width: 80vw;
       border-radius: 20px;
     }
 
@@ -38,6 +39,8 @@
       border-radius: 20px;
       border: none;
       cursor: pointer;
+      position: relative;
+      z-index: 2;
     }
 
     #yes {
@@ -48,11 +51,28 @@
     #no {
       background: gray;
       color: white;
+      position: absolute; /* REQUIRED for movement */
     }
 
     #system {
       margin-top: 20px;
       font-size: 18px;
+      z-index: 2;
+      position: relative;
+    }
+
+    .floating {
+      position: absolute;
+      width: 120px;
+      border-radius: 15px;
+      opacity: 0;
+      animation: fadeIn 2s forwards;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
     }
   </style>
 </head>
@@ -60,14 +80,14 @@
 
 <div class="container">
   <h1 id="question">Will you be my Valentine? 💘</h1>
-  <img src="picture.jpg">
+  <img class="main" src="picture.jpg">
 </div>
 
 <p id="system"></p>
 
 <div class="buttons">
   <button id="yes" onclick="yes()">Yes 💖</button>
-  <button id="no" onclick="no()">No </button>
+  <button id="no" onclick="no()">No</button>
 </div>
 
 <script>
@@ -75,16 +95,18 @@ function no() {
   document.getElementById("system").innerText =
     "System error: 'No' is not supported please try again.";
 
-  let x = Math.random() * (window.innerWidth - 120);
-  let y = Math.random() * (window.innerHeight - 50);
   let noBtn = document.getElementById("no");
+
+  let x = Math.random() * (window.innerWidth - 120);
+  let y = Math.random() * (window.innerHeight - 60);
+
   noBtn.style.left = x + "px";
   noBtn.style.top = y + "px";
 }
 
 function yes() {
   document.body.innerHTML = `
-    <div style="text-align:center; margin-top:80px;">
+    <div class="container">
       <h1>💘 YAYAY BUG BABY!!! 💘</h1>
       <p>best choice evaaaaaaaa</p>
     </div>
@@ -98,21 +120,37 @@ function yes() {
     "image5.jpg"
   ];
 
-  for (let i = 0; i < 75; i++) {
+  let count = 0;
+
+  let interval = setInterval(() => {
+    if (count >= 40) {
+      clearInterval(interval);
+      return;
+    }
+
     let img = document.createElement("img");
     img.src = images[Math.floor(Math.random() * images.length)];
-    img.style.position = "absolute";
-    img.style.width = "120px";
-    img.style.borderRadius = "15px";
-    img.style.left = Math.random() * (window.innerWidth - 120) + "px";
-    img.style.top = Math.random() * (window.innerHeight - 120) + "px";
-    
-    // Optional: slight rotation for cuteness
-    img.style.transform = "rotate(" + (Math.random() * 20 - 10) + "deg)";
-    
+    img.className = "floating";
+
+    let x, y;
+    do {
+      x = Math.random() * (window.innerWidth - 120);
+      y = Math.random() * (window.innerHeight - 120);
+    } while (y < 200); 
+
+    img.style.left = x + "px";
+    img.style.top = y + "px";
+    img.style.transform = "rotate(" + (Math.random()*20 - 10) + "deg)";
+
     document.body.appendChild(img);
-  }
+    count++;
+  }, 500); 
 }
+</script>
+
+</body>
+</html>
+
 </script>
 
 </body>
