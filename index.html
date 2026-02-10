@@ -84,11 +84,32 @@ function no() {
 
 function yes() {
   document.body.innerHTML = `
-    <div style="text-align:center; margin-top:100px;">
+    <div style="text-align:center; margin-top:80px;">
       <h1>💘 YAYAY BUG BABY!!! 💘</h1>
       <p>best choice evaaaaaaaa</p>
     </div>
   `;
+
+  const images = [
+    "IMG_7699.jpg",
+    "IMG_1234.jpg",
+    "IMG_5678.jpg"
+  ];
+
+  for (let i = 0; i < 20; i++) {
+    let img = document.createElement("img");
+    img.src = images[Math.floor(Math.random() * images.length)];
+    img.style.position = "absolute";
+    img.style.width = "120px";
+    img.style.borderRadius = "15px";
+    img.style.left = Math.random() * (window.innerWidth - 120) + "px";
+    img.style.top = Math.random() * (window.innerHeight - 120) + "px";
+    
+    // Optional: slight rotation for cuteness
+    img.style.transform = "rotate(" + (Math.random() * 20 - 10) + "deg)";
+    
+    document.body.appendChild(img);
+  }
 }
 </script>
 
