@@ -126,23 +126,26 @@ function yes() {
     "3.jpg"
   ];
 
+  // shuffle once
+  images.sort(() => Math.random() - 0.5);
+
   let count = 0;
 
   let interval = setInterval(() => {
-    if (count >= 150) {
+    if (count >= images.length) {
       clearInterval(interval);
       return;
     }
 
     let img = document.createElement("img");
-    img.src = images[Math.floor(Math.random() * images.length)];
+    img.src = images[count];   // <- not random anymore
     img.className = "floating";
 
     let x, y;
     do {
       x = Math.random() * (window.innerWidth - 120);
       y = Math.random() * (window.innerHeight - 120);
-    } while (y < 200); 
+    } while (y < 200);
 
     img.style.left = x + "px";
     img.style.top = y + "px";
@@ -150,7 +153,7 @@ function yes() {
 
     document.body.appendChild(img);
     count++;
-  }, 500); 
+  }, 500);
 }
 </script>
 
